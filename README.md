@@ -11,5 +11,5 @@ For example: **feature/cxx-openframeworks**
 
 ## What for?
 
-Initially, this was done in preparation for the event in St. Petersburg [*Global Day of Coderetreat*](https://www.meetup.com/EPAM-IT-EVENTS/events/244312858/). Several templates were created to use and develop them later.
+Initially, this was done in preparation for the event in St. Petersburg [***Global Day of Coderetreat***](https://www.meetup.com/EPAM-IT-EVENTS/events/244312858/). Several templates were created to use and develop them later.
 In the future, this is for the fan and the experience of experimenting with new technologies.
