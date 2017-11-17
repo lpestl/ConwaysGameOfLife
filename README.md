@@ -3,4 +3,7 @@ Conway's Game of Life (wiki: [RU](https://ru.wikipedia.org/wiki/%D0%96%D0%B8%D0%
 
 ## What is in this repository?
 
-In this repository, I'll try to collect (perhaps and implement to the logical conclusion) several different implementations of this game. Each branch in the repository will develop its platform and be named in the format: **feature/[_programming language_]-[_framework / main library / ..._]** . For example: **feature/cxx-openframeworks**
+In this repository, I'll try to collect (perhaps and implement to the logical conclusion) several different implementations of this game. Each branch in the repository will develop its platform and be named in the format: 
+**feature/[_programming language_]-[_framework / main library / ..._]** 
+
+For example: **feature/cxx-openframeworks**
