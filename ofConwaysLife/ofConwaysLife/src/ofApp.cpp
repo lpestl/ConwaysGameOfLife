@@ -1,8 +1,10 @@
 #include "ofApp.h"
+#include <iostream>
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+	unit = new Unit(Unit::Point{ 0, 0 });
+	countClick = 0;
 }
 
 //--------------------------------------------------------------
@@ -37,7 +39,33 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+	switch (countClick)
+	{
+	case 0:
+		unit->predictionNextState(Unit::ALIVE);
+		break;
+	case 1:
+		unit->nextGeneration();
+		break;
+	case 2:
+		unit->nextGeneration();
+		break;
+	case 3:
+		delete unit;
+		unit = nullptr;
+		break;
+	case 4:
+		if (unit == nullptr)
+			std::cout << "[INFO] Unit is NULL" << std::endl;
+		else {
+			std::cout << "[INFO] Unit is not NULL" << std::endl;
+			std::cout << "[INFO] Unit age is "<< unit->getAge() << std::endl;
+		}
+		break;
+	default:
+		break;
+	}
+	countClick++;
 }
 
 //--------------------------------------------------------------
