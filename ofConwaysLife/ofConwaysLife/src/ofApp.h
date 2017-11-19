@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "Unit.h"
+#include "GridUniverse.h"
 
 class ofApp : public ofBaseApp{
 
@@ -9,6 +9,8 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+
+		void exit();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -23,6 +25,6 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 	private:
-		Unit * unit;
+		GridUniverse * grid;
 		int countClick;
 };

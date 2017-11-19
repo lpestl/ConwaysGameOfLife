@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	unit = new Unit(Unit::Point{ 0, 0 });
+	grid = new GridUniverse(GridUniverse::LOOPED);
 	countClick = 0;
 }
 
@@ -15,6 +15,11 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+}
+
+void ofApp::exit()
+{
+	delete grid;
 }
 
 //--------------------------------------------------------------
@@ -42,27 +47,29 @@ void ofApp::mousePressed(int x, int y, int button){
 	switch (countClick)
 	{
 	case 0:
-		unit->predictionNextState(Unit::ALIVE);
+		grid->initNull(GridUniverse::Size(3, 3));
+		grid->draw();
 		break;
 	case 1:
-		unit->nextGeneration();
+		grid->initRandom(GridUniverse::Size(3, 3));
+		grid->draw();
 		break;
 	case 2:
-		unit->nextGeneration();
+		std::cout << "Count unit = " << grid->getPopulation() << std::endl;
 		break;
 	case 3:
-		delete unit;
-		unit = nullptr;
+		grid->nextGeneration();
+		grid->nextGeneration();
+		std::cout << "Age universe = " << grid->getAge() << std::endl;
 		break;
 	case 4:
-		if (unit == nullptr)
-			std::cout << "[INFO] Unit is NULL" << std::endl;
-		else {
-			std::cout << "[INFO] Unit is not NULL" << std::endl;
-			std::cout << "[INFO] Unit age is "<< unit->getAge() << std::endl;
-		}
 		break;
 	default:
+		grid->initRandom(GridUniverse::Size(3, 3));
+		grid->draw();
+		std::cout << "Count unit = " << grid->getPopulation() << std::endl;
+		grid->nextGeneration();
+		std::cout << "Age universe = " << grid->getAge() << std::endl;
 		break;
 	}
 	countClick++;

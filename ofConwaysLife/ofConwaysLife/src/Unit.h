@@ -1,25 +1,27 @@
 #pragma once
 
+
+enum State { UNKNOWN, ALIVE, DEAD };
+struct Point
+{
+	Point (unsigned int _x, unsigned int _y) : x(_x), y(_y) {}
+	unsigned int x;
+	unsigned int y;
+};
+
 class Unit
 {
 public:
-	enum State { UNKNOWN, ALIVE, DEAD };
-	struct Point
-	{
-		unsigned int x;
-		unsigned int y;
-	};
-
 	Unit(Point _position);
 	~Unit();
 
-	State getCurrentState();
-	State getNextState();
-	unsigned int getAge();
-	Point getPosition();
+	State			getCurrentState();
+	State			getNextState();
+	unsigned int	getAge();
+	Point			getPosition();
 
-	void predictionNextState(State _nextState);
-	void nextGeneration();
+	void			predictionNextState(State _nextState);
+	void			nextGeneration();
 
 private:
 	State			currentState;
