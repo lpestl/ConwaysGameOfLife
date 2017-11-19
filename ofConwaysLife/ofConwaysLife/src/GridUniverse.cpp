@@ -92,17 +92,15 @@ void GridUniverse::draw()
 //	}
 //}
 
-bool GridUniverse::isThereUnit(Point _position)
+Unit* GridUniverse::isThereUnit(Point _position)
 {
-	bool contain = false;
 	for (auto it = units->begin(); it != units->end(); ++it) {
 		auto pos = (*it)->getPosition();
 		if ((pos.x == _position.x) && (pos.y == _position.y)) {
-			contain = true;
-			break;
+			return (*it);
 		}
 	}
-	return contain;
+	return nullptr;
 }
 
 unsigned int GridUniverse::getPopulation()
@@ -124,12 +122,21 @@ unsigned int GridUniverse::numberNeighbors(Point _point)
 	int nextX = _point.x + 1;
 	int nextY = _point.y + 1;
 
-	// LOOPED type game
-	if (prevX < 0) prevX = size.width - 1;
-	if (nextX >= size.width) nextX = 0;
-	if (prevY < 0) prevY = size.height - 1;
-	if (nextY >= size.height) nextY = 0;
-
+	switch (type)
+	{
+	case GridUniverse::BOUNDED:
+		break;
+	case GridUniverse::LOOPED:
+		// LOOPED type game
+		if (prevX < 0) prevX = size.width - 1;
+		if (nextX >= size.width) nextX = 0;
+		if (prevY < 0) prevY = size.height - 1;
+		if (nextY >= size.height) nextY = 0;
+		break;
+	default:
+		break;
+	}
+	
 	// Top Left
 	if (isThereUnit(Point(prevX, prevY))) count++;
 	// Top Middle
@@ -152,48 +159,56 @@ unsigned int GridUniverse::numberNeighbors(Point _point)
 
 void GridUniverse::nextGeneration()
 {
-	std::list<Point> placesBirth;
-
-	for (auto it = units->begin(); it != units->end(); ++it) {
-		auto countNeighbors = numberNeighbors((*it)->getPosition());
-		// Any live cell with two or three live neighbours lives on to the next generation.
-		if ((countNeighbors == 2) || (countNeighbors == 3)) 
-		{
-			(*it)->predictionNextState(ALIVE);
-		}
-		else 
-		{
-			// Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
-			if (countNeighbors < 2) {
-				(*it)->predictionNextState(DEAD);
-			}
-			else
-			{
-				// Any live cell with more than three live neighbours dies, as if by overpopulation.
-				if (countNeighbors > 3) {
-					(*it)->predictionNextState(DEAD);
+	std::vector<Point> placesBirth;
+	
+	for (unsigned int i = 0; i < size.height; ++i) {
+		for (unsigned int j = 0; j < size.width; ++j) {
+			Point there(i, j);
+			auto countNeighbors = numberNeighbors(there);
+			Unit* curUnit;
+			if ((curUnit = isThereUnit(there)) != nullptr) {
+				// Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
+				if (countNeighbors < 2) {
+					curUnit->predictionNextState(DEAD);
+				}
+				else {
+					// Any live cell with two or three live neighbours lives on to the next generation.
+					if ((countNeighbors == 2) || (countNeighbors == 3)) {
+						curUnit->predictionNextState(ALIVE);
+					}
+					else {
+						// Any live cell with more than three live neighbours dies, as if by overpopulation.
+						if (countNeighbors > 3) {
+							curUnit->predictionNextState(DEAD);
+						}
+					}
 				}
 			}
+			else {
+				// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+				if (countNeighbors == 3) {
+					placesBirth.push_back(there);
+				}
+			}
+			
 		}
-
-		// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-
 	}
 
+	// Next Generation
 	age++;
+
+	for (auto it = units->begin(); it != units->end(); ) {
+		(*it)->nextGeneration();
+		if ((*it)->getCurrentState() == DEAD) {
+			delete *it;
+			units->erase(it++);
+		}
+		else {
+			++it;
+		}
+	}
+
+	for (auto it = placesBirth.begin(); it != placesBirth.end(); ++it) {
+		createNewUnit((*it));
+	}
 }
-//
-//unsigned int GridUniverse::numberEndlesNeighbors(Point _point)
-//{
-//	return 0;
-//}
-//
-//unsigned int GridUniverse::numberBoundedNeighbors(Point _point)
-//{
-//	return 0;
-//}
-//
-//unsigned int GridUniverse::numberLoopedNeighbors(Point _point)
-//{
-//	return 0;
-//}

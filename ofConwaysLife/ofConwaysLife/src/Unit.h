@@ -4,9 +4,9 @@
 enum State { UNKNOWN, ALIVE, DEAD };
 struct Point
 {
-	Point (unsigned int _x, unsigned int _y) : x(_x), y(_y) {}
-	unsigned int x;
-	unsigned int y;
+	Point (long int _x, long int _y) : x(_x), y(_y) {}
+	long int x;
+	long int y;
 };
 
 class Unit

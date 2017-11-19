@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	grid = new GridUniverse(GridUniverse::LOOPED);
+	grid = new GridUniverse(GridUniverse::BOUNDED);
 	countClick = 0;
 }
 
@@ -47,28 +47,21 @@ void ofApp::mousePressed(int x, int y, int button){
 	switch (countClick)
 	{
 	case 0:
-		grid->initNull(GridUniverse::Size(3, 3));
+		//grid->initRandom(GridUniverse::Size(5, 5));
+		grid->initNull(GridUniverse::Size(5, 5));
+		grid->createNewUnit(Point(0, 1));
+		grid->createNewUnit(Point(1, 2));
+		grid->createNewUnit(Point(2, 0));
+		grid->createNewUnit(Point(2, 1));
+		grid->createNewUnit(Point(2, 2));
 		grid->draw();
-		break;
-	case 1:
-		grid->initRandom(GridUniverse::Size(3, 3));
-		grid->draw();
-		break;
-	case 2:
 		std::cout << "Count unit = " << grid->getPopulation() << std::endl;
-		break;
-	case 3:
-		grid->nextGeneration();
-		grid->nextGeneration();
 		std::cout << "Age universe = " << grid->getAge() << std::endl;
 		break;
-	case 4:
-		break;
 	default:
-		grid->initRandom(GridUniverse::Size(3, 3));
+		grid->nextGeneration();
 		grid->draw();
 		std::cout << "Count unit = " << grid->getPopulation() << std::endl;
-		grid->nextGeneration();
 		std::cout << "Age universe = " << grid->getAge() << std::endl;
 		break;
 	}

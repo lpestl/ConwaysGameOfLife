@@ -13,7 +13,7 @@ public:
 		unsigned int height;
 	};
 
-	enum Type { /*ENDLES, BOUNDED,*/ LOOPED };
+	enum Type { /*ENDLES,*/ BOUNDED, LOOPED };
 
 	GridUniverse(Type _type);
 	~GridUniverse();
@@ -26,7 +26,7 @@ public:
 	virtual void draw();
 
 	//void killUnit(Unit *_unit);
-	bool isThereUnit(Point _position);
+	Unit* isThereUnit(Point _position);
 	unsigned int getPopulation();
 	unsigned int getAge();
 	unsigned int numberNeighbors(Point _point);
@@ -34,10 +34,6 @@ public:
 	void nextGeneration();	
 
 private:
-	//unsigned int numberEndlesNeighbors(Point _point);
-	//unsigned int numberBoundedNeighbors(Point _point);
-	//unsigned int numberLoopedNeighbors(Point _point);
-
 	Type					type;
 	unsigned int			age;
 	Size					size;
