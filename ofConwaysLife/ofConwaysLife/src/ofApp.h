@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "GridUniverse.h"
+#include "ofGameUnit.h"
 
 class ofApp : public ofBaseApp{
 
@@ -27,4 +28,8 @@ class ofApp : public ofBaseApp{
 	private:
 		GridUniverse * grid;
 		int countClick;
+
+		ofGameUnit* unit1;
+		ofGameUnit* unit2;
+		ofGameUnit* unit3;
 };

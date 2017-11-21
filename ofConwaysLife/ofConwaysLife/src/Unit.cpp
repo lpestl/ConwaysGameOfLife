@@ -35,6 +35,11 @@ Point Unit::getPosition()
 	return position;
 }
 
+void Unit::draw()
+{
+	std::cout << "Unit (" << position.x << "; " << position.y << ") is ALIVE" << std::endl;
+}
+
 void Unit::predictionNextState(State _nextState)
 {
 	nextState = _nextState;

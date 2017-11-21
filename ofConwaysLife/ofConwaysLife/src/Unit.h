@@ -1,6 +1,5 @@
 #pragma once
 
-
 enum State { UNKNOWN, ALIVE, DEAD };
 struct Point
 {
@@ -20,10 +19,12 @@ public:
 	unsigned int	getAge();
 	Point			getPosition();
 
+	virtual void	draw();
+
 	void			predictionNextState(State _nextState);
 	void			nextGeneration();
 
-private:
+protected:
 	State			currentState;
 	unsigned int	age;
 	Point			position;
