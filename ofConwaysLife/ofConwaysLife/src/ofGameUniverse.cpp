@@ -1,27 +1,94 @@
 #include "ofGameUniverse.h"
 
-// TODO: Write code, blead!
-void ofGameUniverse::setup(ofPoint _size, float _betweenInterval)
+void ofGameUniverse::setup(ofPoint _size, unsigned int _countColumns, unsigned int _countRows, float _betweenInterval)
 {
+	setSize(_size, _betweenInterval);
+	GridUniverse::initNull(Size(_countColumns, _countRows));
+
+	calculateUnitSize();
 }
 
-void ofGameUniverse::update()
+void ofGameUniverse::update(ofPoint _position, float _scale)
 {
+	rect.x = _position.x;
+	rect.y = _position.y;
+
+	scale = _scale;
+
+	scaledSize.x = rect.width * scale;
+	scaledSize.y = rect.height * scale;
+
+	for (auto* unit : *units) {
+		try 
+		{
+			ofGameUnit* ofUnit = dynamic_cast<ofGameUnit*>(unit);
+			ofUnit->update(_position, scale);
+		}
+		catch (const std::bad_cast& e)
+		{
+			std::cerr << "[ERROR] " << e.what() << ". Chech ofGameUniverse.update " << std::endl;
+			std::cerr << "[INFO] Live units in the list are logical, but not physical, and therefore do not have color." << std::endl;
+		}
+	}
 }
 
 void ofGameUniverse::createNewUnit(Point _position)
 {
+	ofGameUnit* unit = new ofGameUnit(_position);
+	unit->setBetweenInterval(betweenInterval);
+	unit->setColor(colorUnits);
+	unit->setSize(unitSize.x, unitSize.y);
+	units->push_back(std::move(unit));
 }
 
 void ofGameUniverse::draw()
 {
-}
-// End TODO
+	ofSetColor(colorBackground);
+	for (auto i = 0; i < size.height; ++i) {
+		for (auto j = 0; j < size.width; ++j) {
+			ofDrawRectangle(ofRectangle((rect.x + i * (betweenInterval + unitSize.x) * scale),
+										(rect.y + j * (betweenInterval + unitSize.y) * scale),
+				unitSize.x * scale,
+				unitSize.y * scale));
+		}
+	}
 
-void ofGameUniverse::setSize(ofPoint _size)
+	for (auto* unit : *units) {
+		try
+		{
+			ofGameUnit* ofUnit = dynamic_cast<ofGameUnit*>(unit);
+			ofUnit->draw();
+		}
+		catch (const std::bad_cast& e)
+		{
+			std::cerr << "[ERROR] " << e.what() << ". Chech ofGameUniverse.update " << std::endl;
+			std::cerr << "[INFO] Live units in the list are logical, but not physical, and therefore do not have color." << std::endl;
+		}
+	}
+}
+
+void ofGameUniverse::setSize(ofPoint _size, float _betweenInterval)
 {
 	rect.width = _size.x;
 	rect.height = _size.y;
+
+	betweenInterval = _betweenInterval;
+
+	calculateUnitSize();
+
+	for (auto* unit : *units) {
+		try 
+		{
+			ofGameUnit* ofUnit = dynamic_cast<ofGameUnit*>(unit);
+			ofUnit->setBetweenInterval(betweenInterval);
+			ofUnit->setSize(unitSize.x, unitSize.y);
+		}
+		catch (const std::bad_cast& e)
+		{
+			std::cerr << "[ERROR] " << e.what() << ". Chech ofGameUniverse.setSize " << std::endl;
+			std::cerr << "[INFO] Live units in the list are logical, but not physical, and therefore do not have color." << std::endl;
+		}
+	}
 }
 
 ofPoint ofGameUniverse::getSize()
@@ -34,19 +101,14 @@ ofPoint ofGameUniverse::getScaledSize()
 	return scaledSize;
 }
 
-void ofGameUniverse::setScale(float _scale)
+ofPoint ofGameUniverse::getPosition()
 {
-	scale = _scale;
+	return ofPoint(rect.x, rect.y);
 }
 
 float ofGameUniverse::getScale()
 {
 	return scale;
-}
-
-void ofGameUniverse::setBetweenInterval(float _interval)
-{
-	betweenInterval = _interval;
 }
 
 float ofGameUniverse::getBetweenInterval()
@@ -86,7 +148,7 @@ void ofGameUniverse::setColorUnits(ofColor _colorUnits)
 		}
 		catch (const std::bad_cast& e)
 		{
-			std::cerr << "[ERROR] " << e.what() << std::endl;
+			std::cerr << "[ERROR] " << e.what() << ". Chech ofGameUniverse.setColorUnits " << std::endl;
 			std::cerr << "[INFO] Live units in the list are logical, but not physical, and therefore do not have color." << std::endl;
 		}
 	}
@@ -95,4 +157,16 @@ void ofGameUniverse::setColorUnits(ofColor _colorUnits)
 ofColor ofGameUniverse::getColorUnits()
 {
 	return colorUnits;
+}
+
+ofPoint ofGameUniverse::getUnitSize()
+{
+	return unitSize;
+}
+
+ofPoint ofGameUniverse::calculateUnitSize()
+{
+	unitSize.x = (rect.width - (size.width - 1) * betweenInterval) / size.width;
+	unitSize.y = (rect.height - (size.height - 1) * betweenInterval) / size.height;
+	return unitSize;
 }

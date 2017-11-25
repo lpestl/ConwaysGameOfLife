@@ -17,7 +17,7 @@ public:
 
 	GridUniverse(Type _type);
 	virtual ~GridUniverse();
-
+	
 	void initNull(Size _size);
 	void initRandom(Size _size);
 	void cleareGrid();

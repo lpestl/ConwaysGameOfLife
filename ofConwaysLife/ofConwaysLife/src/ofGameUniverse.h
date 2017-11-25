@@ -15,25 +15,22 @@ public:
 		betweenInterval(0),
 		colorBackground(ofColor(255, 255, 255, 0)),
 		colorIntervals(ofColor(255, 255, 255, 0)),
-		colorUnits(ofColor::black)
+		colorUnits(ofColor::black), 
+		unitSize(ofPoint(0, 0))
 	{}
 
-	void setup(ofPoint _size, float _betweenInterval);
-	void update();
+	void setup(ofPoint _size, unsigned int _countColumns, unsigned int _countRows, float _betweenInterval = NULL);
+	void update(ofPoint _position, float _scale);
 
-	// Overrides start
 	virtual void createNewUnit(Point _position);
 	virtual void draw();
-	// Overrides end
 
-	void setSize(ofPoint _size);
+	void setSize(ofPoint _size, float _betweenInterval = NULL);
 	ofPoint getSize();
 	ofPoint getScaledSize();
+	ofPoint getPosition();
 	
-	void setScale(float _scale);
 	float getScale();
-
-	void setBetweenInterval(float _interval);
 	float getBetweenInterval();
 
 	void setColorBackground(ofColor _colorBakground);
@@ -45,7 +42,11 @@ public:
 	void setColorUnits(ofColor _colorUnits);
 	ofColor getColorUnits();
 
+	ofPoint getUnitSize();
+
 private:
+	ofPoint calculateUnitSize();
+
 	ofRectangle rect;
 	ofPoint scaledSize;
 	float scale;
@@ -53,5 +54,6 @@ private:
 	ofColor colorBackground;
 	ofColor colorIntervals;
 	ofColor colorUnits;
+	ofPoint unitSize;
 };
 

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "GridUniverse.h"
-#include "ofGameUnit.h"
+#include "ofGameUniverse.h"
 
 class ofApp : public ofBaseApp{
 
@@ -26,10 +25,6 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 	private:
-		GridUniverse * grid;
+		ofGameUniverse *universe;
 		int countClick;
-
-		ofGameUnit* unit1;
-		ofGameUnit* unit2;
-		ofGameUnit* unit3;
 };
