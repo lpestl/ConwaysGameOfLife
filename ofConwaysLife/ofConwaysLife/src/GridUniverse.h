@@ -16,7 +16,7 @@ public:
 	enum Type { /*ENDLES,*/ BOUNDED, LOOPED };
 
 	GridUniverse(Type _type);
-	~GridUniverse();
+	virtual ~GridUniverse();
 
 	void initNull(Size _size);
 	void initRandom(Size _size);
@@ -30,10 +30,13 @@ public:
 	unsigned int getPopulation();
 	unsigned int getAge();
 	unsigned int numberNeighbors(Point _point);
-		
+	
+	void setType(Type _type);
+	Type getType();
+
 	void nextGeneration();	
 
-private:
+protected:
 	Type					type;
 	unsigned int			age;
 	Size					size;

@@ -12,7 +12,7 @@ class Unit
 {
 public:
 	Unit(Point _position);
-	~Unit();
+	virtual ~Unit();
 
 	State			getCurrentState();
 	State			getNextState();

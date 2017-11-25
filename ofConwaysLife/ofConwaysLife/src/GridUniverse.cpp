@@ -157,6 +157,16 @@ unsigned int GridUniverse::numberNeighbors(Point _point)
 	return count;
 }
 
+void GridUniverse::setType(Type _type)
+{
+	type = _type;
+}
+
+GridUniverse::Type GridUniverse::getType()
+{
+	return type;
+}
+
 void GridUniverse::nextGeneration()
 {
 	std::vector<Point> placesBirth;
