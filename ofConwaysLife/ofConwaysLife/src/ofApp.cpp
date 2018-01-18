@@ -8,7 +8,7 @@ void ofApp::setup(){
 
 	universe = new ofGameUniverse();
 
-	universe->setup(ofPoint(ofGetWindowWidth(), ofGetWindowHeight()), 30, 30, 2);
+	universe->setup(ofPoint(ofGetWindowWidth(), ofGetWindowHeight()), ofGetWindowWidth() / 60, ofGetWindowHeight() / 60, 5, true);
 	universe->setColorBackground(ofColor(255, 255, 255, 120));
 	universe->setColorUnits(ofColor(255, 0, 0, 255));
 	
@@ -23,7 +23,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw(){
 	ofBackgroundGradient(ofColor::aqua, ofColor::black, ofGradientMode::OF_GRADIENT_CIRCULAR);
-	universe->draw();
+	universe->draw(/*false*/);
 }
 
 void ofApp::exit()

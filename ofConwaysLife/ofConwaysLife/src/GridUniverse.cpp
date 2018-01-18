@@ -41,7 +41,7 @@ void GridUniverse::initRandom(Size _size)
 	for (auto i = 0; i < size.height; ++i) {
 		for (auto j = 0; j < size.width; ++j) {
 			if ((std::rand() % 2) == 1) {
-				createNewUnit(Point(i, j));
+				createNewUnit(Point(j, i));
 			}
 		}
 	}
@@ -67,7 +67,7 @@ void GridUniverse::draw()
 {
 	for (auto i = 0; i < size.height; ++i) {
 		for (auto j = 0; j < size.width; ++j) {
-			if (isThereUnit(Point(i,j))) {
+			if (isThereUnit(Point(j, i))) {
 				std::cout << "1 ";
 			}
 			else {
@@ -171,9 +171,68 @@ void GridUniverse::nextGeneration()
 {
 	std::vector<Point> placesBirth;
 	
-	for (unsigned int i = 0; i < size.height; ++i) {
+	// TODO: Do it!!!!!!!!!
+	for (auto it = units->begin(); it != units->end(); ++it) {
+		for (int i = (*it)->getPosition().y - 1; i <= (*it)->getPosition().y + 1; ++i) {
+			for (int j = (*it)->getPosition().x - 1; j <= (*it)->getPosition().x + 1; ++j) {				
+				int igrid = i;
+				int jgrid = j;
+				switch (type)
+				{
+				case GridUniverse::BOUNDED:
+					break;
+				case GridUniverse::LOOPED:
+					// LOOPED type game
+					if (jgrid < 0) jgrid = size.width - 1;
+					if (jgrid >= size.width) jgrid = 0;
+					if (igrid < 0) igrid = size.height - 1;
+					if (igrid >= size.height) igrid = 0;
+					break;
+				default:
+					break;
+				}
+				
+				Point there(jgrid, igrid);
+				auto countNeighbors = numberNeighbors(there);
+				Unit* curUnit;
+				if ((curUnit = isThereUnit(there)) != nullptr) {
+					// Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
+					if (countNeighbors < 2) {
+						curUnit->predictionNextState(DEAD);
+					}
+					else {
+						// Any live cell with two or three live neighbours lives on to the next generation.
+						if ((countNeighbors == 2) || (countNeighbors == 3)) {
+							curUnit->predictionNextState(ALIVE);
+						}
+						else {
+							// Any live cell with more than three live neighbours dies, as if by overpopulation.
+							if (countNeighbors > 3) {
+								curUnit->predictionNextState(DEAD);
+							}
+						}
+					}
+				}
+				else {
+					// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+					if (countNeighbors == 3) {
+						bool isPointExist = false;
+						for (auto it = placesBirth.begin(); it != placesBirth.end(); ++it) {
+							if (((*it).x == there.x) && ((*it).y == there.y)) {
+								isPointExist = true;
+								break;
+							}
+						}
+						if (!isPointExist) placesBirth.push_back(there);
+					}
+				}				
+			}
+		}
+	}
+
+	/*for (unsigned int i = 0; i < size.height; ++i) {
 		for (unsigned int j = 0; j < size.width; ++j) {
-			Point there(i, j);
+			Point there(j, i);
 			auto countNeighbors = numberNeighbors(there);
 			Unit* curUnit;
 			if ((curUnit = isThereUnit(there)) != nullptr) {
@@ -202,7 +261,7 @@ void GridUniverse::nextGeneration()
 			}
 			
 		}
-	}
+	}*/
 
 	// Next Generation
 	age++;

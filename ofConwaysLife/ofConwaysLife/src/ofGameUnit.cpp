@@ -26,7 +26,8 @@ void ofGameUnit::update(ofPoint _gridPosition, float _scale)
 	scaledSize.x = rect.width * scale;
 	scaledSize.y = rect.height * scale;
 
-	std::cout << "[INFO] Scale Unit: " << scale << "; Rect (" << rect.x << "; " << rect.y << "; " << scaledSize.x << "; " << scaledSize.y << ");" << std::endl;
+	std::cout << "[INFO] Unit position: (" << Unit::position.x << "; " << Unit::position.y << "); " << std::endl;
+	//std::cout << "[INFO] Scale Unit: " << scale << "; Rect (" << rect.x << "; " << rect.y << "; " << scaledSize.x << "; " << scaledSize.y << ");" << std::endl;
 }
 
 void ofGameUnit::draw()

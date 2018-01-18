@@ -1,10 +1,14 @@
 #include "ofGameUniverse.h"
 
-void ofGameUniverse::setup(ofPoint _size, unsigned int _countColumns, unsigned int _countRows, float _betweenInterval)
+void ofGameUniverse::setup(ofPoint _size, unsigned int _countColumns, unsigned int _countRows, float _betweenInterval, bool randomGrid)
 {
 	setSize(_size, _betweenInterval);
-	GridUniverse::initNull(Size(_countColumns, _countRows));
-
+	if (randomGrid) {
+		GridUniverse::initRandom(Size(_countColumns, _countRows));
+	}
+	else {
+		GridUniverse::initNull(Size(_countColumns, _countRows));
+	}
 	calculateUnitSize();
 }
 
@@ -30,6 +34,8 @@ void ofGameUniverse::update(ofPoint _position, float _scale)
 			std::cerr << "[INFO] Live units in the list are logical, but not physical, and therefore do not have color." << std::endl;
 		}
 	}
+
+	std::cout << "Size universe: (" << GridUniverse::size.width << "; " << GridUniverse::size.height << "); " << std::endl;
 }
 
 void ofGameUniverse::createNewUnit(Point _position)
@@ -41,15 +47,17 @@ void ofGameUniverse::createNewUnit(Point _position)
 	units->push_back(std::move(unit));
 }
 
-void ofGameUniverse::draw()
+void ofGameUniverse::draw(bool withBg)
 {
-	ofSetColor(colorBackground);
-	for (auto i = 0; i < size.height; ++i) {
-		for (auto j = 0; j < size.width; ++j) {
-			ofDrawRectangle(ofRectangle((rect.x + i * (betweenInterval + unitSize.x) * scale),
-										(rect.y + j * (betweenInterval + unitSize.y) * scale),
-				unitSize.x * scale,
-				unitSize.y * scale));
+	if (withBg) {
+		ofSetColor(colorBackground);
+		for (auto i = 0; i < size.height; ++i) {
+			for (auto j = 0; j < size.width; ++j) {
+				ofDrawRectangle(ofRectangle((rect.x + j * (betweenInterval + unitSize.x) * scale),
+					(rect.y + i * (betweenInterval + unitSize.y) * scale),
+					unitSize.x * scale,
+					unitSize.y * scale));
+			}
 		}
 	}
 

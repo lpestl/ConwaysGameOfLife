@@ -19,11 +19,11 @@ public:
 		unitSize(ofPoint(0, 0))
 	{}
 
-	void setup(ofPoint _size, unsigned int _countColumns, unsigned int _countRows, float _betweenInterval = NULL);
+	void setup(ofPoint _size, unsigned int _countColumns, unsigned int _countRows, float _betweenInterval = NULL, bool randomGrid = false);
 	void update(ofPoint _position, float _scale);
 
 	virtual void createNewUnit(Point _position);
-	virtual void draw();
+	virtual void draw(bool withBg = true);
 
 	void setSize(ofPoint _size, float _betweenInterval = NULL);
 	ofPoint getSize();
