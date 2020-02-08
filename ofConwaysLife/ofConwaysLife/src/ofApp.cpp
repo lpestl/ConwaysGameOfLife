@@ -8,7 +8,7 @@ void ofApp::setup(){
 
 	universe = new ofGameUniverse();
 
-	universe->setup(ofPoint(ofGetWindowWidth(), ofGetWindowHeight()), ofGetWindowWidth() / 60, ofGetWindowHeight() / 60, 5, true);
+	universe->setup(ofPoint(ofGetWindowWidth(), ofGetWindowHeight()), ofGetWindowWidth() / 30, ofGetWindowHeight() / 30, 5, true);
 	universe->setColorBackground(ofColor(255, 255, 255, 120));
 	universe->setColorUnits(ofColor(255, 0, 0, 255));
 	
